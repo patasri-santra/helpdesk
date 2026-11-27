@@ -4,10 +4,12 @@ A mini helpdesk where users raise support tickets and admins (the support team) 
 
 | | |
 | --- | --- |
-| Live app | `<add Vercel URL>` |
-| Live API | `<add Render URL>/api/health` |
+| Live app | https://helpdesk-6v76-delta.vercel.app |
+| Live API | https://helpdesk-q4zu.onrender.com/api/health |
 | Demo user | Register your own account on the live app |
-| Demo admin | `<add admin email>` / `<add admin password>` |
+| Demo admin | `admin@helpdesk.com` / `Admin@12345` |
+
+> Note: the API runs on Render's free tier, so the first request after a period of inactivity can take up to a minute to respond.
 
 ## How it works
 
@@ -26,7 +28,7 @@ Who can see what: a user sees only their own tickets. An admin sees all tickets.
 - **Admin tools:** all tickets, filter by status, priority, category or user, change status and priority, reply on any ticket, dashboard counts.
 - **Comments:** linked to a ticket and its author.
 - **Events:** `ticket.created`, `ticket.updated`, `ticket.status_changed`, `comment.added`, `ticket.resolved` and `ticket.deleted` trigger an activity log and notifications.
-- **Extras:** search, pagination, sorting, automated tests, Postman collection, React frontend, optional Docker setup.
+- **Extras:** search, pagination, sorting, automated tests, Postman collection, React frontend.
 
 ## Tech stack
 
@@ -77,15 +79,6 @@ npm run dev
 ```
 
 The app runs at http://localhost:5173 and expects `VITE_API_URL=http://localhost:5000/api`.
-
-**With Docker (optional)**
-
-```bash
-docker compose up --build
-docker compose exec api node src/scripts/seed.js
-```
-
-This starts the API and a MongoDB container. The frontend is still started with `npm run dev`.
 
 ### Backend environment variables
 
@@ -196,10 +189,10 @@ Known trade-off: the frontend stores the JWT in `localStorage` for simplicity, w
 
 ## Deployment
 
-1. **Database:** create a free MongoDB Atlas cluster, allow network access, and copy the connection string.
-2. **API on Render:** root directory `backend`, build command `npm install`, start command `npm start`. Set `MONGO_URI`, `JWT_SECRET`, `NODE_ENV=production` and `CLIENT_URL` (your frontend URL).
-3. **Admin account:** run `npm run seed` from your laptop with the Atlas connection string in `backend/.env`.
-4. **Frontend on Vercel:** root directory `frontend`, set `VITE_API_URL` to `<your API URL>/api`.
+1. **Database:** MongoDB Atlas (free tier), with network access allowed so the API can connect.
+2. **API on Render:** root directory `backend`, build command `npm install`, start command `npm start`. Environment variables: `MONGO_URI`, `JWT_SECRET`, `NODE_ENV=production` and `CLIENT_URL` (the frontend URL).
+3. **Admin account:** created by running `npm run seed` from a laptop with the Atlas connection string in `backend/.env`.
+4. **Frontend on Vercel:** root directory `frontend`, with `VITE_API_URL` set to `<API URL>/api`.
 
 ## Future improvements
 
